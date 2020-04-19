@@ -17,10 +17,6 @@ from pyspark.sql.functions import udf
 
 
 def train(docDF, topic_num, iter_num):
-    #rdd_ = sc.parallelize(text)
-    # data = rdd.map(lambda x: Row(id=x[0], text=x[1]))
-    #data = rdd_.map(lambda kv: Row(idd = kv[0], Text = kv[1].split(" ")))
-    #docDF = spark.createDataFrame(data)
     Vector = CountVectorizer(inputCol="Text", outputCol="vectors")
     model = Vector.fit(docDF)
     result = model.transform(docDF)

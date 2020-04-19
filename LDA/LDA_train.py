@@ -20,7 +20,7 @@ def train(text):
     rdd_ = sc.parallelize(l)
     # data = rdd.map(lambda x: Row(id=x[0], text=x[1]))
 
-    data = rdd_.map(lambda (idd,words): Row(idd = idd.split(" "), words = words.split(" ")))
+    data = rdd_.map(lambda t: Row(idd = t[0].split(" "), words = t[1].split(" ")))
     docDF = spark.createDataFrame(data)
     # docDF.show()
     Vector = CountVectorizer(inputCol="words", outputCol="vectors")
@@ -32,7 +32,7 @@ def train(text):
     result = model_id.transform(result)
     # result.show()
 
-    corpus = result.select("vectors_id", "vectors").rdd.map(lambda (x,y): [np.asscalar(np.where(x.toArray()==1)[0]) ,Vectors.sparse(y.size, y.indices, y.values)]).cache()
+    corpus = result.select("vectors_id", "vectors").rdd.map(lambda t: [np.asscalar(np.where(t[0].toArray()==1)[0]) ,Vectors.sparse(t[1].size, t[1].indices, t[1].values)]).cache()
     columns = ['id', 'features']
     corpus = corpus.toDF(columns)
     # corpus.printSchema()
@@ -90,7 +90,7 @@ l_test=[("sssss","I fucking hate covid-19")]
 def test(text, ldaModel, model):
     rdd_test = sc.parallelize(l_test)
 
-    data_test = rdd_test.map(lambda (idd,words): Row(idd = idd.split(" "), words = words.split(" ")))
+    data_test = rdd_test.map(lambda t: Row(idd = t[0].split(" "), words = t[1].split(" ")))
     docDF_test = spark.createDataFrame(data_test)
     result_test = model.transform(docDF_test)
 
@@ -98,7 +98,7 @@ def test(text, ldaModel, model):
     model_id_test = Vector_id.fit(result_test)
     result_test = model_id_test.transform(result_test)
 
-    corpus_test = result_test.select("vectors_id", "vectors").rdd.map(lambda (x,y): [np.asscalar(np.where(x.toArray()==1)[0]) ,Vectors.sparse(y.size, y.indices, y.values)]).cache()
+    corpus_test = result_test.select("vectors_id", "vectors").rdd.map(lambda t: [np.asscalar(np.where(t[0].toArray()==1)[0]) ,Vectors.sparse(t[1].size, t[1].indices, t[1].values)]).cache()
     columns = ['id', 'features']
     corpus_test = corpus_test.toDF(columns)
     corpus_test.show()

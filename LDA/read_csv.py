@@ -20,7 +20,16 @@ input_path = '/train.csv'
 df = spark.read.csv(input_bucket + input_path, escape='"',sep=',',multiLine=True,header=True)
 df.show()
 
-train_data = []
+def token(text):
+    result = []
+    myStopwords = ["covid","stayhome","coronavirus","home","stay"]
+    for token in gensim.utils.simple_preprocess(text):
+        if token not in gensim.parsing.preprocessing.STOPWORDS and len(token) > 3:
+            #result.append(lemmatize_stemming(token))
+            if token not in myStopwords:
+                result.append((token))
+    return result
+
 def preprocess(posts):
 
 	emoji_pattern = re.compile( u"(["                     # .* removed
@@ -35,12 +44,16 @@ def preprocess(posts):
 	posts = emoji_pattern.sub(u'', posts)
 
 	return posts
-count=0
+
+
+train_data =[]
 for row in df.rdd.collect():
-    t = (row["ID"],preprocess(str(row["Text"])))
-    train_data.append(t)
+    text = str(row["Text"])
+    process = token(preprocess(text))
+    train_data.append((row["ID"],' '.join(process)))
 
 
+print(train_data)
 
 
 

@@ -46,7 +46,7 @@ class LDA_APP(object):
 
     def token(self,text):
         result = []
-        myStopwords = ["covid","stayhome","coronavirus","home","stay"]
+        myStopwords = ["quarantine","corona","covid","stayhome","coronavirus","home","stay"]
         for token in gensim.utils.simple_preprocess(text):
             if token not in gensim.parsing.preprocessing.STOPWORDS and len(token) > 3:
                 #result.append(lemmatize_stemming(token))

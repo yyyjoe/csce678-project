@@ -1,4 +1,6 @@
 from django.shortcuts import render
+from django.http import JsonResponse
+from django.http import HttpResponse
 from .lda import LDA_APP
 LDA = LDA_APP.LDA()
 

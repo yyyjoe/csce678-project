@@ -11,11 +11,11 @@ class MainFunction extends Component {
         return (
             <Fragment>
                 <Grid container direction="row" style={{height: "92%"}} justify="center">
-                    <Grid container direction="column" style={{width: "20%"}}>
+                    <Grid container direction="column" style={{width: "20%", marginRight: 10}}>
                         <Grid item style={{width: "100%"}}>
                             <Paper style={{width: "95%", padding: 10, marginTop: 10, marginBottom: 10, height: "90%" }}>
                                 <Typography variant="subtitle2">
-                                    Please Enter a public Instagram ID to get posts :
+                                    Enter a public Instagram ID to get posts :
                                 </Typography>
                                 <TextField 
                                     error={this.props.isIdInvalid}
@@ -26,7 +26,9 @@ class MainFunction extends Component {
                                     onChange={this.props.handleChange}
                                     margin="normal"
                                     inputProps={{
-                                        style: {fontSize: 15} 
+                                        style: {
+                                            fontSize: 15, 
+                                            padding: 10} 
                                     }}
                                     style={{ marginTop: 10, marginRight: 10}}
                                     helperText={this.props.errorText}
@@ -47,8 +49,8 @@ class MainFunction extends Component {
                             </Paper>
                         </Grid>
                     </Grid>
-                    <Grid container style={{width : "670px", height: "100%", overflow: 'hide'}}>
-                        <Paper style={{padding: 10, marginBottom: 10,  height: "100%", width: "100%", overflow: 'scroll'}}>
+                    <Grid container style={{width : "690px", height: "100%"}}>
+                        <Paper style={{padding: 10, marginBottom: 10,  height: "100%", width: "100%", overflow: 'auto'}}>
                             <PostList
                                 posts={this.props.posts}
                             />

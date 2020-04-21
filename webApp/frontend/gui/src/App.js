@@ -10,26 +10,16 @@ const url = "http://ec2-34-237-223-207.compute-1.amazonaws.com/recommender/?user
 class App extends Component {
   constructor(props) {
     super(props);
-    // this.state = {
-    //   userID: "",
-    //   isIdInvalid: false,
-    //   errorText:"",
-    //   topics: {
-    //     labels : [],
-    //     data : [],
-    //   },
-    //   posts: []
-    // };
-
-    // Stub data for development
     this.state = {
-      posts: data.posts,
-      topics : {
-        labels : data.topics.labels,
-        data : data.topics.data,
-      }
-    }
-
+      userID: "",
+      isIdInvalid: false,
+      errorText:"",
+      topics: {
+        labels : [],
+        data : [],
+      },
+      posts: []
+    };
     this.handleSend = this.handleSend.bind(this)
     this.handleChange = this.handleChange.bind(this)
     this.getPosts = this.getPosts.bind(this)
@@ -51,7 +41,7 @@ class App extends Component {
         console.log(error);
         this.setState({
           isIdInvalid : true,
-          errorText : "Invalid/Private account ID"
+          errorText : "Invalid/Private account ID",
         })
       })
   }
@@ -60,7 +50,12 @@ class App extends Component {
     this.getPosts()
     this.setState({
       isIdInvalid : false,
-      errorText : ""
+      errorText : "",
+      topics: {
+        labels : [],
+        data : [],
+      },
+      posts: []
     })
   }
 

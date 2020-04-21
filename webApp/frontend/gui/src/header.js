@@ -21,9 +21,9 @@ export default function ButtonAppBar() {
 
     return (
         <div className={classes.root}>
-            <AppBar position="static">
+            <AppBar position="static" style={{alignItems: 'center'}}>
                 <Toolbar>
-                    <Typography variant="h6" className={classes.title}>
+                    <Typography variant="h5" className={classes.title}>
                         COVID-19 Instagram Posts Recommender
                     </Typography>
                 </Toolbar>

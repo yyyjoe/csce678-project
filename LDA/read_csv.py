@@ -32,18 +32,19 @@ def token(text):
 
 def preprocess(posts):
 
-	emoji_pattern = re.compile( u"(["                     # .* removed
+        emoji_pattern = re.compile( u"(["                     # .* removed
                                 u"\U0001F600-\U0001F64F"  # emoticons
                                 u"\U0001F300-\U0001F5FF"  # symbols & pictographs
                                 u"\U0001F680-\U0001F6FF"  # transport & map symbols
                                 u"\U0001F1E0-\U0001F1FF"  # flags (iOS)
                                 u"(\\n)"
                                 u"(#|@)"
-                                "])", flags= re.UNICODE) 
-	posts = re.sub(r'[^a-zA-Z]+', ' ', posts, re.ASCII)
-	posts = emoji_pattern.sub(u'', posts)
+                                "])", flags= re.UNICODE)
+        posts = re.sub(r'[^a-zA-Z]+', ' ', posts, re.ASCII)
+        posts = emoji_pattern.sub(u'', posts)
 
-	return posts
+
+        return posts
 
 
 train_data =[]
@@ -54,10 +55,3 @@ for row in df.rdd.collect():
 
 
 print(train_data)
-
-
-
-
-
-
-

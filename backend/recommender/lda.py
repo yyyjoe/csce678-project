@@ -31,15 +31,17 @@ spark = SparkSession(sc)
 class LDA_APP(object):
     def __init__(self):
         self.NUM_TOPICS=3
+
         
         db_path = "/home/hadoop/csce678-project/LDA/db.csv"
         df = pd.read_csv(db_path,lineterminator='\n').drop_duplicates(['ID'])
-        print(df)
+
         self.db = spark.createDataFrame(df)
          
         ldaModel_path = "/home/hadoop/csce678-project/LDA/lda_model"
         self.ldaModel = LocalLDAModel.load(ldaModel_path)
         
+
         model_path = "/home/hadoop/csce678-project/LDA/token"
         self.model = CountVectorizerModel.load(model_path)
 
@@ -83,15 +85,17 @@ class LDA_APP(object):
         post_num = 10
         text = user_account.get_user_post(user_id,post_num)
         return text
-        
+
+
     def get_topic_vector(self,text):
         # text -> [[ID,Document]]
         text[0][1] = " ".join(self.token(self.preprocess(text[0][1])))
-        
+
         rdd_ = sc.parallelize(text)
         data = rdd_.map(lambda kv: Row(idd = kv[0], Text = kv[1].split(" ")))
         docDF = spark.createDataFrame(data)
         result = self.model.transform(docDF)
+
 
 
         corpus = result.select("idd", "vectors").rdd.map(lambda xy: [xy[0], Vectors.sparse(xy[1].size, xy[1].indices, xy[1].values)]).cache()
@@ -101,9 +105,11 @@ class LDA_APP(object):
         vector = transformed.select('topicDistribution').collect()[0][0]
 
         return vector
+
     def convert(self,o):
         if isinstance(o, numpy.int64): return int(o)  
         raise TypeError
+
     def get_similarity(self,vector,k):
         # input vector is the probability distribution of each topic
         nums_of_posts=np.zeros(self.NUM_TOPICS,dtype=float)
@@ -120,6 +126,7 @@ class LDA_APP(object):
         topk = df.orderBy('topicDistribution',ascending=False).take(k)
 
         data ={}
+
         data["num_topics"] = str(self.NUM_TOPICS)
         data["topics"] = {}
         data["posts"] = []

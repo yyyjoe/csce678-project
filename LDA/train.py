@@ -50,6 +50,7 @@ def token(text):
                 result.append((token))
     return result
 
+
 def preprocess(posts):
         posts = str(posts)
         emoji_pattern = re.compile( u"(["                     # .* removed

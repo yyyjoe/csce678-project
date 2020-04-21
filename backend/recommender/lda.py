@@ -10,6 +10,7 @@ from pyspark.ml.clustering import LDA, LocalLDAModel
 from pyspark.sql.types import *
 from pyspark.sql.functions import udf
 import re
+import numpy
 import pandas as pd
 import gensim
 from gensim.utils import simple_preprocess
@@ -32,9 +33,10 @@ class LDA_APP(object):
         self.NUM_TOPICS=3
         
         db_path = "/home/hadoop/csce678-project/LDA/db.csv"
-        df = pd.read_csv(db_path,lineterminator='\n')
+        df = pd.read_csv(db_path,lineterminator='\n').drop_duplicates(['ID'])
+        print(df)
         self.db = spark.createDataFrame(df)
-        
+         
         ldaModel_path = "/home/hadoop/csce678-project/LDA/lda_model"
         self.ldaModel = LocalLDAModel.load(ldaModel_path)
         
@@ -99,7 +101,9 @@ class LDA_APP(object):
         vector = transformed.select('topicDistribution').collect()[0][0]
 
         return vector
-
+    def convert(self,o):
+        if isinstance(o, numpy.int64): return int(o)  
+        raise TypeError
     def get_similarity(self,vector,k):
         # input vector is the probability distribution of each topic
         nums_of_posts=np.zeros(self.NUM_TOPICS,dtype=float)
@@ -116,20 +120,20 @@ class LDA_APP(object):
         topk = df.orderBy('topicDistribution',ascending=False).take(k)
 
         data ={}
-        data["num_topics"] = self.NUM_TOPICS
+        data["num_topics"] = str(self.NUM_TOPICS)
         data["topics"] = {}
         data["posts"] = []
         data["topics"]["labels"] = list(topic_id)
         data["topics"]["data"] = list(vector)
 
         for row in topk:
-            data["posts"].append({'userID':row[0],
-                                  'imgURL':row[2],
-                                  'text':row[3],
-                                  'date':row[4],
-                                  'like':row[5],
+            data["posts"].append({"userID":str(row[0]),
+                                  "imgURL":str(row[2]),
+                                  "text":str(row[3]),
+                                  "date":str(row[4]),
+                                  "like":row[5],
                                  })
 
-        app_json = json.dumps(str(data))
+        app_json = json.dumps(data, default=self.convert)
 
         return app_json

@@ -13,6 +13,7 @@ from pyspark.ml.clustering import LDA
 from pyspark.sql.types import *
 from pyspark.sql.functions import udf,col
 
+from pyspark.sql.functions import col
 
 def train(df,text, topic_num, iter_num):
     rdd_ = sc.parallelize(text)
@@ -49,4 +50,4 @@ def train(df,text, topic_num, iter_num):
     new_df = new_df.filter(col('ID').isin(['B-jsAw8AkiL']) == False)
 
     return (ldaModel, model, new_df)
-~                                    
+

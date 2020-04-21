@@ -43,6 +43,7 @@ def preprocess(posts):
         posts = re.sub(r'[^a-zA-Z]+', ' ', posts, re.ASCII)
         posts = emoji_pattern.sub(u'', posts)
 
+
         return posts
 
 

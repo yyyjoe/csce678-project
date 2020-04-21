@@ -24,7 +24,7 @@ export default function ButtonAppBar() {
             <AppBar position="static">
                 <Toolbar>
                     <Typography variant="h6" className={classes.title}>
-                        Good2Know
+                        COVID-19 Instagram Posts Recommender
                     </Typography>
                 </Toolbar>
             </AppBar>

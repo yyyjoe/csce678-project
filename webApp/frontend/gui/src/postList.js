@@ -19,8 +19,8 @@ export default (posts) => {
                         //     like={post.like}
                         // />
                         <InstagramEmbed
-                            //url={post.post_url}
-                            url="https://www.instagram.com/p/B-ky7fYp8RP/?utm_source=ig_embed"
+                            url={post.post_url}
+                            //url="https://www.instagram.com/p/B-ky7fYp8RP/?utm_source=ig_embed"
                             hideCaption={false}
                             containerTagName='div'
                             protocol=''

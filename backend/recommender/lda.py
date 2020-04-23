@@ -119,7 +119,7 @@ class LDA_APP(object):
         percentage = np.zeros(self.NUM_TOPICS,dtype=float)
         columns = ["ID","topicDistribution","Post_URL"]
         df = self.db.rdd.map(lambda row:((   row["ID"],
-                                             float(np.fromstring(row["topicDistribution"][1:-1], dtype=np.float, sep=',').dot(vector))/float(norm(vector)),
+                                             float(np.fromstring(row["topicDistribution"][1:-1], dtype=np.float, sep=',').dot(vector))/float(norm(np.fromstring(row["topicDistribution"][1:-1], dtype=np.float, sep=','))*norm(vector)),
                                                 row["Post_URL"],
                                                 ))).toDF(columns)
         topk = df.orderBy('topicDistribution',ascending=False).take(k)

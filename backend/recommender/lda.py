@@ -20,7 +20,9 @@ from nltk.stem.porter import *
 import numpy as np
 import os
 import json
+from scipy.spatial.distance import cdist
 import nltk
+from numpy.linalg import norm
 from . import user_account
 # nltk.download('wordnet')
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -115,13 +117,10 @@ class LDA_APP(object):
         nums_of_posts=np.zeros(self.NUM_TOPICS,dtype=float)
         topic_id = np.arange(self.NUM_TOPICS)
         percentage = np.zeros(self.NUM_TOPICS,dtype=float)
-        columns = ["ID","topicDistribution","Img_URL","Text","Date","Likes"]
+        columns = ["ID","topicDistribution","Post_URL"]
         df = self.db.rdd.map(lambda row:((   row["ID"],
-                                                float(np.fromstring(row["topicDistribution"][1:-1], dtype=np.float, sep=',').dot(vector)),
-                                                row["Img_URL"],
-                                                row["Text"],
-                                                row["Date"],
-                                                row["Likes"],
+                                             float(np.fromstring(row["topicDistribution"][1:-1], dtype=np.float, sep=',').dot(vector))/float(norm(vector)),
+                                                row["Post_URL"],
                                                 ))).toDF(columns)
         topk = df.orderBy('topicDistribution',ascending=False).take(k)
 
@@ -134,11 +133,7 @@ class LDA_APP(object):
         data["topics"]["data"] = list(vector)
 
         for row in topk:
-            data["posts"].append({"userID":str(row[0]),
-                                  "imgURL":str(row[2]),
-                                  "text":str(row[3]),
-                                  "date":str(row[4]),
-                                  "like":row[5],
+            data["posts"].append({"post_url":str(row[2]),
                                  })
 
         app_json = json.dumps(data, default=self.convert)

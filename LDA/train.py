@@ -75,7 +75,7 @@ for row in df.rdd.collect():
 
 
 topic_num=3
-iter_num=1000
+iter_num=2000
 
 ldaModel, model, new_df = train(df,train_data,topic_num,iter_num)
 

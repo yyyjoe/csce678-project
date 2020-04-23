@@ -18,9 +18,10 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 
 const useStyles = makeStyles(theme => ({
     card: {
-      maxWidth: "32%",
+      //maxWidth: "32%",
       marginTop: 10,
-      marginLeft: "1%"
+      marginLeft: "1%",
+      height: 'auto',
     },
     media: {
       width: "100%",

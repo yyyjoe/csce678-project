@@ -61,9 +61,7 @@ class Chart extends React.Component {
       }
     render() {
         return (
-        <MDBContainer>
-            <Pie data={this.state.dataPie} options={{ responsive: true }} />
-        </MDBContainer>
+          <Pie data={this.state.dataPie} options={{ responsive: true }} />
         );
     }
 }

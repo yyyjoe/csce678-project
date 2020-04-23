@@ -2,10 +2,10 @@ import React, { Component, Fragment } from 'react';
 import MainFunc from './mainFunction'
 import Header from './header'
 import Footer from './footer'
-// import data from './dataStore'
+import data from './dataStore'
 
 const axios = require('axios');
-const url = "https://good2know.herokuapp.com/Good2Know/?user_id=";
+const url = "http://ec2-34-237-223-207.compute-1.amazonaws.com/recommender/?user_id=";
 
 class App extends Component {
   constructor(props) {
@@ -20,7 +20,6 @@ class App extends Component {
       },
       posts: []
     };
-
     this.handleSend = this.handleSend.bind(this)
     this.handleChange = this.handleChange.bind(this)
     this.getPosts = this.getPosts.bind(this)
@@ -29,10 +28,6 @@ class App extends Component {
   getPosts = () => {
     axios.get(url + this.state.userID)
       .then((response) => {
-        // handle success
-        // const titles = response.data.map(data => data.title)
-        //var myObject = JSON.parse(response.data)
-        console.log(response.data);
         this.setState({
           posts: response.data.posts,
           topics : {
@@ -40,29 +35,31 @@ class App extends Component {
             data : response.data.topics.data,
           }
         })
-
       })
       .catch((error) => {
         // handle error
         console.log(error);
         this.setState({
           isIdInvalid : true,
-          errorText : "Invalid/Private account ID"
+          errorText : "Invalid/Private account ID",
         })
       })
   }
 
   handleSend = (event) => {
-    // console.log("Send:", this.state.userID)
     this.getPosts()
     this.setState({
       isIdInvalid : false,
-      errorText : ""
+      errorText : "",
+      topics: {
+        labels : [],
+        data : [],
+      },
+      posts: []
     })
   }
 
   handleChange = (event) => {
-    // console.log('change!')
     this.setState({
       userID: event.target.value
     })
@@ -81,7 +78,6 @@ class App extends Component {
           isIdInvalid={this.state.isIdInvalid}
           errorText={this.state.errorText}
         />
-        <Footer />
       </Fragment>
     );
   }

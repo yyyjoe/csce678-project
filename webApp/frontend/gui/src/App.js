@@ -5,7 +5,7 @@ import Footer from './footer'
 import data from './dataStore'
 
 const axios = require('axios');
-const url = "http://ec2-34-237-223-207.compute-1.amazonaws.com/recommender/?user_id=";
+const url = "http://ec2-3-84-85-14.compute-1.amazonaws.com/recommender/?user_id=";
 
 class App extends Component {
   constructor(props) {
